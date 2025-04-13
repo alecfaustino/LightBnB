@@ -17,7 +17,7 @@ const getAllReservations = function (guest_id, limit = 10) {
     ORDER BY reservations.start_date
     LIMIT $2`;
   const values = [guest_id, limit];
-  return pool
+  return db
     .query(queryString, values)
     .then(result => result.rows)
     .catch(err => console.log(err.message));

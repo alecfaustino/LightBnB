@@ -11,7 +11,7 @@ const getUserWithEmail = function (email) {
     FROM users
     WHERE email = $1
     `;
-  return pool
+  return db
     .query(queryString, [email])
     .then(result => {
       if (result.rows.length === 0) {
@@ -35,7 +35,7 @@ const getUserWithId = function (id) {
     FROM users
     WHERE users.id = $1
     `;
-  return pool
+  return db
     .query(queryString, [id])
     .then(result => {
       if (result.rows.length === 0) {
@@ -58,7 +58,7 @@ const addUser = function (user) {
     VALUES ($1, $2, $3)
     RETURNING *`;
   const values = [user.name, user.email, user.password]
-  return pool
+  return db
     .query(queryString, values)
     .then(result => result.rows[0])
     .catch(err => err.message);

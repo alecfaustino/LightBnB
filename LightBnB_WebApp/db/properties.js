@@ -55,7 +55,7 @@ const getAllProperties = (options, limit = 10) => {
   ORDER BY cost_per_night
   LIMIT $${values.length}
   `;
-  return pool
+  return db
     .query(queryString, values)
     .then(result => result.rows)
     .catch(err => console.log(err.message));
@@ -101,7 +101,7 @@ const addProperty = function (property) {
     property.number_of_bathrooms,
     property.number_of_bedrooms
   ];
-  return pool
+  return db
     .query(queryString, values)
     .then(result => result.rows[0])
     .catch(err => err.message);
