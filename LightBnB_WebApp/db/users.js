@@ -5,7 +5,7 @@ const db = require('./index');
  * @param {String} email The email of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-const getUserWithEmail = function (email) {
+const getUserWithEmail = function(email) {
   const queryString =
     `SELECT email, password, name, id
     FROM users
@@ -29,7 +29,7 @@ const getUserWithEmail = function (email) {
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-const getUserWithId = function (id) {
+const getUserWithId = function(id) {
   const queryString =
     `SELECT users.id, name, password, email
     FROM users
@@ -52,12 +52,12 @@ const getUserWithId = function (id) {
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
-const addUser = function (user) {
+const addUser = function(user) {
   const queryString =
     `INSERT INTO users (name, email, password)
     VALUES ($1, $2, $3)
     RETURNING *`;
-  const values = [user.name, user.email, user.password]
+  const values = [user.name, user.email, user.password];
   return db
     .query(queryString, values)
     .then(result => result.rows[0])

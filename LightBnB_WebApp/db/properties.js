@@ -12,10 +12,11 @@ const getAllProperties = (options, limit = 10) => {
   const values = [];
   // Conditions to be joined in the WHERE clauses with .join
   const conditions = [];
+  // base query. To be concatenated
   let queryString =
     `SELECT properties.*, avg(property_reviews.rating) as average_rating
-  FROM properties
-  LEFT JOIN property_reviews ON properties.id = property_id`;
+    FROM properties
+    LEFT JOIN property_reviews ON properties.id = property_id`;
 
   if (options.city) {
     values.push(`%${options.city}%`);
@@ -26,8 +27,9 @@ const getAllProperties = (options, limit = 10) => {
     values.push(options.owner_id);
     conditions.push(`owner_id = $${values.length}`);
   }
-  
+
   // if both the minimum price and maxumum are filled
+  // db stores prices in cents, use *100.
   if (options.minimum_price_per_night && options.maximum_price_per_night) {
     values.push(options.minimum_price_per_night * 100, options.maximum_price_per_night * 100);
     conditions.push(`cost_per_night BETWEEN $${values.length - 1} AND $${values.length}`);
@@ -66,8 +68,8 @@ const getAllProperties = (options, limit = 10) => {
  * @param {{}} property An object containing all of the property details.
  * @return {Promise<{}>} A promise to the property.
  */
-const addProperty = function (property) {
-  const queryString = 
+const addProperty = function(property) {
+  const queryString =
     `INSERT INTO properties (
     owner_id, 
     title, 
@@ -86,9 +88,9 @@ const addProperty = function (property) {
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
     RETURNING *`;
   const values = [
-    property.owner_id, 
-    property.title, 
-    property.description, 
+    property.owner_id,
+    property.title,
+    property.description,
     property.thumbnail_photo_url,
     property.cover_photo_url,
     property.cost_per_night,
